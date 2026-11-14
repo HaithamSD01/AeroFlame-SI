@@ -107,17 +107,47 @@ def explain(findings, env, level, question, situation=""):
                 f.write(time.strftime("%H:%M:%S ") + msg + "\n")
         except OSError:
             pass
-    models = [m for m in dict.fromkeys([os.getenv("GEMINI_MODEL", "").strip(), "gemini-3.8-flash", "gemini-flash-latest"]) if m]
-    last_err = None
-    for model in models:          # try the configured model, then current fallbacks
-        t0 = time.time()
+    def available_flash_models():
+        names = []
         try:
-            resp = client.models.generate_content(model=model, contents=prompt)
-            log(f"OK {model} in {time.time()-t0:.1f}s")
-            return (resp.text or "(empty answer)") + f"\n\n<sub>SI model: {model}</sub>"
+            for m in client.models.list():
+                n = m.name.split("/")[-1]
+                acts = getattr(m, "supported_actions", None) or []
+                if ("generateContent" in acts and "flash" in n
+                        and not any(x in n for x in ("image", "tts", "live", "audio", "embed"))):
+                    names.append(n)
         except Exception as ex:
-            log(f"FAIL {model} after {time.time()-t0:.1f}s: {type(ex).__name__}: {str(ex)[:300]}")
-            last_err = ex
+            log(f"list models failed: {ex}")
+        return sorted(names, reverse=True)
+
+    preferred = [os.getenv("GEMINI_MODEL", "").strip(), "gemini-3.8-flash"]
+    tried, last_err, listed = set(), None, None
+    queue = [m for m in dict.fromkeys(preferred) if m]
+    while len(tried) < 5:
+        if not queue:
+            if listed is not None:
+                break
+            listed = available_flash_models()          # any flash model this key can use
+            log(f"available flash models: {listed[:8]}")
+            queue = [m for m in listed if m not in tried]
+            continue
+        model = queue.pop(0)
+        if model in tried:
+            continue
+        tried.add(model)
+        for attempt in (1, 2):                      # one retry on "high demand" (503)
+            t0 = time.time()
+            try:
+                resp = client.models.generate_content(model=model, contents=prompt)
+                log(f"OK {model} in {time.time()-t0:.1f}s")
+                return (resp.text or "(empty answer)") + f"\n\n<sub>SI model: {model}</sub>"
+            except Exception as ex:
+                last_err = ex
+                log(f"FAIL {model} (try {attempt}) after {time.time()-t0:.1f}s: {type(ex).__name__}: {str(ex)[:200]}")
+                if "503" in str(ex) and attempt == 1:
+                    time.sleep(2)
+                    continue
+                break
     return f"SI call failed: {last_err}\n\nCheck the key at https://aistudio.google.com/apikey (and GEMINI_MODEL in .env)."
 
 
