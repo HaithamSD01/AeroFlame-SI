@@ -81,7 +81,10 @@ def read_serial(port_name):
     return last
 
 
-@st.fragment(run_every=1.0)
+SI_BUSY = st.session_state.get("si_busy", False)   # pause live refresh while the SI is answering
+
+
+@st.fragment(run_every=None if SI_BUSY else 1.0)
 def live():
     hist, risks = st.session_state.hist, st.session_state.risk
     if source == "Simulation":
@@ -147,13 +150,22 @@ if st.session_state.risk:
     with right:
         st.subheader("Ask the SI about this alert")
         level = st.radio("Explain for", list(LEVELS), horizontal=True, key="mon_level")
-        if st.button("Explain current situation", type="primary"):
-            situation = (f"Level {cur['level']} (SI risk {cur['score']:.0f}/100), cause: {cur['cause']}. "
-                         f"IR flame: {last['flame_detected']}, smoke raw {last['smoke_raw']}, "
-                         f"temperature {last['temperature_c']} C, trend {cur['temp_rate']*60:+.1f} C/min, "
-                         f"atmosphere {e['o2']:.0%} O2 at {e['p_psi']} psi.")
-            with st.spinner("SI is reading the NASA findings..."):
-                st.markdown(explain(top, env, level, "What should the crew do now, and why?", situation))
+        if st.button("Explain current situation", type="primary", disabled=SI_BUSY):
+            st.session_state.si_request = (
+                f"Level {cur['level']} (SI risk {cur['score']:.0f}/100), cause: {cur['cause']}. "
+                f"IR flame: {last['flame_detected']}, smoke raw {last['smoke_raw']}, "
+                f"temperature {last['temperature_c']} C, trend {cur['temp_rate']*60:+.1f} C/min, "
+                f"atmosphere {e['o2']:.0%} O2 at {e['p_psi']} psi.")
+            st.session_state.si_busy = True
+            st.rerun()
+        if SI_BUSY:
+            with st.spinner("SI is reading the NASA findings... (live view paused)"):
+                st.session_state.si_answer = explain(top, env, level, "What should the crew do now, and why?",
+                                                     st.session_state.get("si_request", ""))
+            st.session_state.si_busy = False
+            st.rerun()
+        if st.session_state.get("si_answer"):
+            st.markdown(st.session_state.si_answer)
         st.button("🔄 Refresh findings")
 
 with st.expander("Why this works: NASA findings behind AeroFlame"):
