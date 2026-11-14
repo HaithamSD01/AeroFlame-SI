@@ -76,7 +76,12 @@ def load_si_prompt(path=os.path.join(ROOT, "si_core_prompt.md")):
 
 
 def explain(findings, env, level, question, situation=""):
-    key = os.getenv("GEMINI_API_KEY")
+    try:  # re-read .env on every click so a key added while the app runs is picked up
+        from dotenv import load_dotenv
+        load_dotenv(os.path.join(ROOT, ".env"), override=True)
+    except ImportError:
+        pass
+    key = (os.getenv("GEMINI_API_KEY") or "").strip().strip('"').strip("'")
     if not key:
         try:
             key = st.secrets.get("GEMINI_API_KEY")   # Streamlit Community Cloud secrets
@@ -93,7 +98,10 @@ def explain(findings, env, level, question, situation=""):
         return "Add GEMINI_API_KEY to .env to get SI explanations.\n\nTop findings used:\n" + context
     from google import genai
     client = genai.Client(api_key=key)
-    resp = client.models.generate_content(model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"), contents=prompt)
-    return resp.text
+    try:
+        resp = client.models.generate_content(model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"), contents=prompt)
+        return resp.text
+    except Exception as ex:
+        return f"SI call failed: {ex}\n\nCheck the key at https://aistudio.google.com/apikey (and GEMINI_MODEL in .env)."
 
 
