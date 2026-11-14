@@ -1,0 +1,11 @@
+id,experiment,pillar,environments,finding,conditions,source_title,source_url
+1,BASS-II,Prevention,Spacecraft;Space station;Lunar base;Mars base;Rover,Studies how solid materials such as fabrics and plastics burn under different airflow speeds and oxygen levels in microgravity.,Varying airflow and O2,Challenge report / PSI,https://psi.nasa.gov/
+2,Saffire,Prevention,Spacecraft;Space station,Large fire tests run inside uncrewed cargo vehicles to see how a fire grows in a spacecraft-sized volume.,Spacecraft-scale samples,Challenge report / PSI,https://psi.nasa.gov/
+3,SAME-R,Detection,Spacecraft;Space station;Lunar base;Mars base;Rover,Measures smoke particles from overheated spacecraft materials to help design smoke detectors that work in microgravity.,Smoke aerosols,Challenge report / PSI,https://psi.nasa.gov/
+4,DAFT-2,Detection,Space station;Lunar base;Mars base;Rover,"Tests detection of dust and aerosols in microgravity, which matters where dust can trigger false alarms.",Dust and aerosols,Challenge report / PSI,https://psi.nasa.gov/
+5,FLEX-2,Suppression,Spacecraft;Space station,Burns fuel droplets and studies how flames go out when the chamber air is diluted with CO2 or helium.,"Droplet combustion, diluted atmosphere",Challenge report / PSI,https://psi.nasa.gov/
+6,CFI,Suppression,Spacecraft;Space station,Studies cool flames: low-temperature burning that can continue without a visible flame.,Droplet combustion (MDCA),Challenge report / PSI,https://psi.nasa.gov/
+7,ACME,Fundamentals,Spacecraft;Space station,Six gaseous-fuel flame experiments run in the Combustion Integrated Rack to understand basic flame behaviour.,Gaseous fuels (CIR),Challenge report / PSI,https://psi.nasa.gov/
+8,Habitat atmosphere,Prevention,Lunar base;Mars base;Rover,"Future lunar bases and pressurized rovers may use about 30% or more oxygen at 10.2 psi or less, which makes materials more flammable.",">=30% O2, <=10.2 psi",Challenge report,https://psi.nasa.gov/
+9,Spacesuits / EVA,Prevention,Spacecraft;Lunar base;Mars base,"Spacesuits run at 4.3 psi with 100% oxygen, so anything inside a suit faces a very oxygen-rich environment.","100% O2, 4.3 psi",Challenge report,https://psi.nasa.gov/
+10,LUCI / FM2,Prevention,Lunar base,Upcoming experiments that will add partial-gravity (Moon) flammability data.,Lunar gravity,Challenge report,https://psi.nasa.gov/

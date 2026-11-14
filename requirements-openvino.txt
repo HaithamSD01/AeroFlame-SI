@@ -1,0 +1,3 @@
+# Optional: run the embedding model with Intel OpenVINO (mention it in the submission if you use it)
+openvino
+optimum[openvino]
