@@ -75,6 +75,9 @@ def load_si_prompt(path=os.path.join(ROOT, "si_core_prompt.md")):
         return "You are the SI layer of a NASA fire-safety dashboard. Use only the findings given and name the experiment for each claim."
 
 
+_LAST_OK = {}   # remembers the last model that answered, so the next call starts there
+
+
 def explain(findings, env, level, question, situation=""):
     try:  # re-read .env on every click so a key added while the app runs is picked up
         from dotenv import load_dotenv
@@ -120,7 +123,7 @@ def explain(findings, env, level, question, situation=""):
             log(f"list models failed: {ex}")
         return sorted(names, reverse=True)
 
-    preferred = [os.getenv("GEMINI_MODEL", "").strip(), "gemini-3.8-flash"]
+    preferred = [_LAST_OK.get("model", ""), os.getenv("GEMINI_MODEL", "").strip(), "gemini-3.8-flash"]
     tried, last_err, listed = set(), None, None
     queue = [m for m in dict.fromkeys(preferred) if m]
     while len(tried) < 5:
@@ -140,7 +143,8 @@ def explain(findings, env, level, question, situation=""):
             try:
                 resp = client.models.generate_content(model=model, contents=prompt)
                 log(f"OK {model} in {time.time()-t0:.1f}s")
-                return (resp.text or "(empty answer)") + f"\n\n<sub>SI model: {model}</sub>"
+                _LAST_OK["model"] = model
+                return (resp.text or "(empty answer)") + f"\n\n*SI model: {model}*"
             except Exception as ex:
                 last_err = ex
                 log(f"FAIL {model} (try {attempt}) after {time.time()-t0:.1f}s: {type(ex).__name__}: {str(ex)[:200]}")
