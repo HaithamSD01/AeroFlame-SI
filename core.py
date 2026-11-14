@@ -98,10 +98,14 @@ def explain(findings, env, level, question, situation=""):
         return "Add GEMINI_API_KEY to .env to get SI explanations.\n\nTop findings used:\n" + context
     from google import genai
     client = genai.Client(api_key=key)
-    try:
-        resp = client.models.generate_content(model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"), contents=prompt)
-        return resp.text
-    except Exception as ex:
-        return f"SI call failed: {ex}\n\nCheck the key at https://aistudio.google.com/apikey (and GEMINI_MODEL in .env)."
+    models = [m for m in dict.fromkeys([os.getenv("GEMINI_MODEL", "").strip(), "gemini-3.8-flash", "gemini-flash-latest"]) if m]
+    last_err = None
+    for model in models:          # try the configured model, then current fallbacks
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            return resp.text + f"\n\n<sub>SI model: {model}</sub>"
+        except Exception as ex:
+            last_err = ex
+    return f"SI call failed: {last_err}\n\nCheck the key at https://aistudio.google.com/apikey (and GEMINI_MODEL in .env)."
 
 
