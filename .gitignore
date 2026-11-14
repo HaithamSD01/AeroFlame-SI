@@ -6,3 +6,4 @@ __pycache__/
 *.pyc
 setup.log
 openvino_install.log
+si_debug.log

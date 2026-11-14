@@ -96,15 +96,27 @@ def explain(findings, env, level, question, situation=""):
     )
     if not key:
         return "Add GEMINI_API_KEY to .env to get SI explanations.\n\nTop findings used:\n" + context
+    import time
     from google import genai
-    client = genai.Client(api_key=key)
+    client = genai.Client(api_key=key, http_options={"timeout": 40000})   # ms; never hang the app
+    log_path = os.path.join(ROOT, "si_debug.log")
+
+    def log(msg):
+        try:
+            with open(log_path, "a", encoding="utf-8") as f:
+                f.write(time.strftime("%H:%M:%S ") + msg + "\n")
+        except OSError:
+            pass
     models = [m for m in dict.fromkeys([os.getenv("GEMINI_MODEL", "").strip(), "gemini-3.8-flash", "gemini-flash-latest"]) if m]
     last_err = None
     for model in models:          # try the configured model, then current fallbacks
+        t0 = time.time()
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
-            return resp.text + f"\n\n<sub>SI model: {model}</sub>"
+            log(f"OK {model} in {time.time()-t0:.1f}s")
+            return (resp.text or "(empty answer)") + f"\n\n<sub>SI model: {model}</sub>"
         except Exception as ex:
+            log(f"FAIL {model} after {time.time()-t0:.1f}s: {type(ex).__name__}: {str(ex)[:300]}")
             last_err = ex
     return f"SI call failed: {last_err}\n\nCheck the key at https://aistudio.google.com/apikey (and GEMINI_MODEL in .env)."
 
