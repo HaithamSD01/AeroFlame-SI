@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ENVIRONMENTS, HabitatSim, riskIndex } from "./sim.js";
+import { ENVIRONMENTS, HabitatSim, makeLevelHold, riskIndex } from "./sim.js";
 import { connectNode } from "./serial.js";
 
 const MAX_POINTS = 300;
@@ -20,12 +20,13 @@ export function useMonitor() {
   const risks = useRef([]);
   const log = useRef([]);
   const disconnect = useRef(null);
+  const hold = useRef(makeLevelHold());
   const alertT = useRef(null);   // when AeroFlame first reached WARNING in this run
 
   const o2 = ENVIRONMENTS[env].o2;
 
   const push = useCallback((reading) => {
-    const r = riskIndex(reading, hist.current, o2);
+    const r = hold.current(riskIndex(reading, hist.current, o2));
     const prev = risks.current[risks.current.length - 1];
     const s = sim.current;
     const note = (text, kind = "info") => log.current.unshift({ t: reading.t, text, kind });
@@ -54,6 +55,7 @@ export function useMonitor() {
     risks.current = [];
     log.current = [];
     alertT.current = null;
+    hold.current = makeLevelHold();
     setTick((n) => n + 1);
   }, [env, air, dist]);
 
@@ -84,7 +86,7 @@ export function useMonitor() {
         };
         pushRef.current(reading);
       }, () => setNodeState("error"));
-      hist.current = []; risks.current = []; log.current = []; alertT.current = null;
+      hist.current = []; risks.current = []; log.current = []; alertT.current = null; hold.current = makeLevelHold();
       setSource("node");
       setNodeState("on");
     } catch {

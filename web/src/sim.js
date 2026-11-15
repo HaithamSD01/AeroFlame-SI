@@ -151,6 +151,27 @@ export function riskIndex(reading, history, o2) {
   };
 }
 
+// Alarm hold for the display: the level rises at once, but steps down only after the index has stayed
+// 10 points under that level's threshold for 5 readings. The index itself is not changed.
+const ORDER = ["NOMINAL", "WATCH", "WARNING", "FIRE"];
+const THRESHOLD = { WATCH: 25, WARNING: 50, FIRE: 75 };
+const PILLAR = { NOMINAL: "Prevention", WATCH: "Detection", WARNING: "Detection", FIRE: "Suppression" };
+
+export function makeLevelHold(margin = 10, readings = 5) {
+  let held = "NOMINAL";
+  let below = 0;
+  return (risk) => {
+    if (ORDER.indexOf(risk.level) >= ORDER.indexOf(held)) {
+      held = risk.level;
+      below = 0;
+    } else {
+      below = risk.score < THRESHOLD[held] - margin ? below + 1 : 0;
+      if (below >= readings) { held = risk.level; below = 0; }
+    }
+    return { ...risk, rawLevel: risk.level, level: held, pillar: PILLAR[held] };
+  };
+}
+
 export const ACTIONS = {
   NOMINAL: "Keep monitoring. Check that stowed fabrics and plastics are rated for this atmosphere.",
   WATCH: "Cross-check the sensors. Smoke without heat or flame can be dust (vacuuming, regolith).",

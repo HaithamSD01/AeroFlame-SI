@@ -3,7 +3,7 @@ import { ASSUMPTIONS } from "../sim.js";
 const STEPS = [
   ["Sense three things", "The node reads an IR flame sensor, an MQ-2 smoke sensor and a BME280 (temperature, pressure, humidity) once per second."],
   ["Send one line", "An ESP32 prints one JSON line per second over USB. This site reads it in the browser with Web Serial."],
-  ["Fuse into one index", "Evidence = 0.5 × flame + 0.3 × smoke + 0.2 × temperature trend, multiplied by an oxygen factor (O₂ / 21%, capped at 2.5)."],
+  ["Fuse into one index", "Evidence = 0.5 × flame + 0.3 × smoke + 0.2 × temperature trend, multiplied by an oxygen factor (O₂ / 21%, capped at 2.5). The level rises at once and steps down only after the index has stayed 10 points under the threshold for 5 s."],
   ["Reject dust", "Smoke with no heat and no flame for 10 s is treated as dust and counts for a quarter."],
   ["Ground the alert", "Each alert level pulls the NASA findings for its pillar: prevention, detection or suppression."],
   ["Explain it", "The SI explains the alert for a student, an engineer or a researcher, using only those findings."],
