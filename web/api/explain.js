@@ -39,7 +39,7 @@ async function callModel(key, model, prompt) {
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: { temperature: 0.3, maxOutputTokens: 900 },
     }),
-    signal: AbortSignal.timeout(25_000),
+    signal: AbortSignal.timeout(14_000),
   });
   if (!res.ok) {
     const err = new Error(`${res.status} ${(await res.text()).slice(0, 160)}`);
@@ -93,10 +93,14 @@ export default async function handler(req, res) {
     `\nFINDINGS:\n${context}`;
 
   const tried = new Set();
-  let queue = [...new Set([lastOk.model, (process.env.GEMINI_MODEL || "").trim(), "gemini-3.8-flash"])].filter(Boolean);
+  // Order: the model that last answered on this instance, the one set in GEMINI_MODEL, then two defaults.
+  // gemini-flash-lite-latest answered reliably on the free tier on 15 Nov; a busy model is skipped, not waited on.
+  let queue = [...new Set([lastOk.model, (process.env.GEMINI_MODEL || "").trim(),
+    "gemini-flash-lite-latest", "gemini-3.8-flash"])].filter(Boolean);
   let listed = false;
   let lastErr = null;
-  while (tried.size < 5) {
+  const started = Date.now();
+  while (tried.size < 5 && Date.now() - started < 40_000) {
     if (!queue.length) {
       if (listed) break;
       listed = true;
@@ -106,19 +110,15 @@ export default async function handler(req, res) {
     const model = queue.shift();
     if (tried.has(model)) continue;
     tried.add(model);
-    for (let attempt = 1; attempt <= 2; attempt++) {   // one retry on "high demand" (503)
-      try {
-        const text = await callModel(key, model, prompt);
-        lastOk.model = model;
-        return res.status(200).json({ text, model });
-      } catch (err) {
-        lastErr = err;
-        if (err.status === 503 && attempt === 1) {
-          await new Promise((r) => setTimeout(r, 1500));
-          continue;
-        }
-        break;
-      }
+    const t0 = Date.now();
+    try {
+      const text = await callModel(key, model, prompt);
+      lastOk.model = model;
+      console.log(`SI ok: ${model} in ${Date.now() - t0} ms`);
+      return res.status(200).json({ text, model });
+    } catch (err) {
+      lastErr = err;
+      console.warn(`SI skip: ${model} after ${Date.now() - t0} ms: ${String(err.message).slice(0, 120)}`);
     }
   }
   console.error("SI call failed:", lastErr?.message);
