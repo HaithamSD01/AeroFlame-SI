@@ -88,4 +88,4 @@ SI tools (Claude, Gemini) were used to speed up coding, generate the explainer v
 only from retrieved NASA findings. The solution concept is the team's own.
 
 ## Team
-Mohamed El Hamdy · Haitham Dhaimi · Nawal Elkellali · Hoda El Khayder · Hala Barbou
+Mohamed El Hamdy · Haitham Dhaimi · Nawal El Kellali · Hoda El Khayder · Hala Barbou
