@@ -19,6 +19,24 @@ space stations, lunar and Martian bases and rovers.
   findings, and the SI explains the situation at Student, Engineer or Researcher level, naming its sources.
 - **NASA PSI Insights**: pick an environment and get PSI findings ranked by relevance with CSV export.
 
+## Web app (React)
+The public site lives in [`web/`](web): a React (Vite) app with the same model and risk index as the Python code,
+ported to JavaScript and checked against it (`npm test`).
+- **Live monitor** with a side view of the module (smoke drifts with the cabin airflow), Ignite / Dust / Reset,
+  time ×1 / ×4 / ×10, an event log that compares AeroFlame with a single smoke detector, and CSV export.
+- **Guided tour** (7 steps) that runs the dust false alarm and the real fire for a first-time visitor.
+- **ESP32 node over USB in the browser** (Web Serial, Chrome or Edge on a computer): the same page reads the real sensors.
+- **NASA findings** with a source link and the basis of each one (flight experiment, ground test, model, challenge report).
+- **SI endpoint** `web/api/explain.js` (serverless): the Gemini key stays on the server as `GEMINI_API_KEY`;
+  the prompt is built on the server from the live readings and the findings in `web/src/data/findings.json`.
+
+```
+cd web
+npm install
+npm run dev      # http://localhost:5173 (the SI endpoint runs on Vercel, or with `vercel dev`)
+npm test         # JavaScript model against the Python reference values
+```
+
 ## Why it matters (NASA grounding)
 - Without buoyancy, smoke does not rise to a ceiling; NASA places ISS smoke detectors in the cabin air return vents.
 - NASA's smoke experiments (SAME) found the ISS detector failed to alarm for Kapton smoke in half of the tests and
