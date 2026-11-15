@@ -7,7 +7,7 @@ AeroFlame SI combines a low-cost **edge sensor node** (IR flame + smoke + temper
 with findings from NASA's **Physical Science Informatics (PSI)** combustion experiments, for spacecraft,
 space stations, lunar and Martian bases and rovers.
 
-**Live demo:** [add Streamlit link] · **Demo video (30 s):** [add YouTube link]
+**Live demo:** https://aeroflame-si.vercel.app · **Demo video (30 s):** [add YouTube link]
 
 ![Lunar base scenario: single smoke detector vs AeroFlame sensor fusion](simulation/figures/3_lunar_scenario_fusion.png)
 
