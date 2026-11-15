@@ -42,7 +42,7 @@ export default function HowItWorks({ monitor }) {
           <video className="demo-video" controls preload="metadata" poster="demo-poster.jpg" src="AeroFlame_SI_demo.mp4">
             <a href="AeroFlame_SI_demo.mp4">Download the demo video</a>
           </video>
-          <p className="fine">Assembled with SI tools (marked "SI-generated"); the voice-over is SI-generated. The site shots are recordings of this site.</p>
+          <p className="fine">Assembled with SI tools (marked "SI-generated"); the voice-over is SI-generated text-to-speech (Google Gemini). The site shots are recordings of this site.</p>
         </div>
         <div>
           <h2>The node in a module, in 3D</h2>

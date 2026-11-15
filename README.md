@@ -84,8 +84,10 @@ Optional: put `GEMINI_API_KEY=...` in a `.env` file (free key: https://aistudio.
 
 ## Use of Super Intelligence (SI)
 SI tools (Claude, Gemini) were used to speed up coding, generate the explainer video and figures (watermarked
-"SI-generated"), and check drafts against the judging criteria. Inside the product, Gemini writes explanations
-only from retrieved NASA findings. The solution concept is the team's own.
+"SI-generated"), and check drafts against the judging criteria. The voice-over of the demo video is SI-generated
+text-to-speech (Google Gemini); this is also recorded in the video file's metadata. Every code change made with SI
+help is labelled as such in the commit history. Inside the product, Gemini writes explanations only from retrieved
+NASA findings. The solution concept is the team's own.
 
 ## Team
 Mohamed El Hamdy · Haitham Dhaimi · Nawal El Kellali · Hoda El Khayder · Hala Barbou
