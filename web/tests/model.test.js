@@ -1,7 +1,7 @@
 // Checks the JavaScript model against reference values produced by the Python model
 // (simulation/aeroflame_model.py, noise switched off). Run: npm test
 import assert from "node:assert/strict";
-import { HabitatSim, riskIndex, spreadRateMmS, ENVIRONMENTS } from "../src/sim.js";
+import { HabitatSim, makeLevelHold, riskIndex, spreadRateMmS, ENVIRONMENTS } from "../src/sim.js";
 
 export function scenario(env, { dustAt = 10, igniteAt = 60, total = 200 } = {}) {
   const sim = new HabitatSim({ env, noise: false });
@@ -41,3 +41,23 @@ assert.equal(spreadRateMmS(0.21).toFixed(2), "1.00");
 assert.equal(spreadRateMmS(0.30).toFixed(2), "2.50");
 assert.equal(spreadRateMmS(1.0).toFixed(1), "14.2");
 console.log("spread-rate checks passed");
+
+// Alarm hold: with sensor noise the displayed level must never step down and back up within a few seconds.
+for (const env of envs) {
+  const sim = new HabitatSim({ env, seed: 11 });
+  const hold = makeLevelHold();
+  const hist = [];
+  let prev = "NOMINAL", changes = 0, drops = 0;
+  for (let i = 0; i < 260; i++) {
+    if (sim.t === 20) sim.ignite();
+    const r = sim.step(1);
+    const k = hold(riskIndex(r, hist, ENVIRONMENTS[env].o2));
+    hist.push(r);
+    if (k.level !== prev) { changes++; if (["NOMINAL", "WATCH", "WARNING", "FIRE"].indexOf(k.level) < ["NOMINAL", "WATCH", "WARNING", "FIRE"].indexOf(prev)) drops++; }
+    prev = k.level;
+  }
+  assert.equal(prev, "FIRE", `ends in FIRE, ${env}`);
+  assert.equal(drops, 0, `no step down during a growing fire, ${env}`);
+  assert.ok(changes <= 3, `at most three level changes, ${env}`);
+}
+console.log("alarm-hold checks passed");
