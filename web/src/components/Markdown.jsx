@@ -7,7 +7,16 @@ function inline(text, keyBase) {
   });
 }
 
-export default function Markdown({ text }) {
+// The model sometimes writes LaTeX-style fragments such as $O_2$ or $\ge$; show them as plain text.
+function plain(text) {
+  return text
+    .replace(/\$([^$\n]{1,40})\$/g, "$1")
+    .replace(/\\geq?(?![a-zA-Z])/g, "≥").replace(/\\leq?(?![a-zA-Z])/g, "≤").replace(/\\times(?![a-zA-Z])/g, "×")
+    .replace(/([A-Za-z])_\{?(\d)\}?/g, "$1$2");
+}
+
+export default function Markdown({ text: raw }) {
+  const text = plain(raw);
   const blocks = [];
   let list = null;
   text.split(/\r?\n/).forEach((raw, i) => {
