@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-ENVIRONMENTS = ["Spacecraft", "Space station", "Lunar base", "Mars base", "Rover"]
+ENVIRONMENTS = ["Spacecraft", "Space station", "Lunar base", "Mars base", "Rover", "Earth"]
 PILLARS = ["Prevention", "Detection", "Suppression", "Fundamentals"]
 LEVELS = {
     "Student": "Explain in plain words for a first-year student. No jargon, 3-4 short sentences.",

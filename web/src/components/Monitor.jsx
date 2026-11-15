@@ -7,7 +7,7 @@ import ModuleView from "./ModuleView.jsx";
 import Chart from "./Chart.jsx";
 import AskSI from "./AskSI.jsx";
 
-const PSI_ENV = { "Spacesuit / EVA": "Spacecraft" }; // no findings are tagged for EVA yet
+const PSI_ENV = { "Spacesuit / EVA": "Spacecraft", "Earth (reference)": "Earth" }; // no findings are tagged for EVA yet
 const SPEEDS = [1, 4, 10];
 
 export function findingsForAlert(env, risk) {
@@ -64,9 +64,9 @@ export default function Monitor({ monitor: m }) {
         </label>
         <label className="field">
           <span>Cabin airflow at the node</span>
-          <input type="range" min="0.02" max="0.30" step="0.01" value={m.air} disabled={!simMode}
+          <input type="range" min="0.02" max="0.30" step="0.01" value={m.air} disabled={!simMode || envInfo.earth}
             onChange={(e) => m.setAir(Number(e.target.value))} />
-          <small>{m.air.toFixed(2)} m/s</small>
+          <small>{envInfo.earth ? "On Earth the buoyant plume carries the smoke" : `${m.air.toFixed(2)} m/s`}</small>
         </label>
         <label className="field">
           <span>Distance from fire to node</span>

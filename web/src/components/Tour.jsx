@@ -14,7 +14,7 @@ export const TOUR = [
     text: "The fabric is burning. Watch the smoke drift to the node at the air return. Flame, smoke and heat agree, and the index climbs through watch and warning to fire.",
     run: (m) => { m.setSpeed(4); m.ignite(); } },
   { target: "findings", title: "Every alert comes with NASA's evidence",
-    text: "Each level pulls the NASA findings for its pillar. During a fire that is suppression: BASS-II showed flames survive in very slow air and flare up when the airflow returns.",
+    text: "Each level pulls the NASA findings for its pillar. During a fire that is suppression: in BASS-II a thin plastic flame went out below about 2 cm/s of airflow and blew off above about 40 cm/s.",
     run: (m) => { m.setSpeed(1); } },
   { target: "si", title: "Ask the SI what to do",
     text: "The SI gets the live readings and only these findings. It must name the experiment behind each claim and say when microgravity data is being applied to lunar gravity." },

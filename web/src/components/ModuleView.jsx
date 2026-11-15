@@ -45,7 +45,9 @@ export default function ModuleView({ monitor }) {
       const midY = (top + bottom) / 2;
       const simMode = m.source === "sim";
       const micro = m.envInfo.micro;
+      const earth = Boolean(m.envInfo.earth);
       const nodeX = srcX + m.dist * pxPerM;
+      const nodeY = earth ? top + 30 : midY;
       const area = simMode ? (m.reading?._source_area_cm2 || 0) : 0;
       const dusty = simMode && Boolean(m.reading?._dust);
       const level = m.risk?.level || "NOMINAL";
@@ -72,7 +74,7 @@ export default function ModuleView({ monitor }) {
       }
 
       // airflow chevrons, moving at the cabin air speed
-      if (simMode) {
+      if (simMode && !earth) {
         const gap = 46;
         const shift = (phase * m.air * pxPerM) % gap;
         ctx.strokeStyle = "rgba(150,175,255,0.22)";
@@ -102,6 +104,10 @@ export default function ModuleView({ monitor }) {
           if (p.dust) {
             p.x += (m.air * pxPerM * 0.6 + (p.seed - 0.5) * 6) * dt;
             p.y += (Math.sin(p.life * 1.3 + p.seed * 9) * 3 + (micro ? 0 : 1.2)) * dt;
+          } else if (earth) {
+            // buoyant plume: straight up, then along the ceiling to the detector at about 0.5 m/s
+            if (p.y > top + 16 + p.seed * 14) { p.y -= 0.5 * pxPerM * dt; p.x += (p.seed - 0.5) * 10 * dt; }
+            else p.x += 0.5 * pxPerM * dt;
           } else {
             p.x += m.air * pxPerM * dt;
             p.y += ((p.seed - 0.5) * 7 - rise) * dt;
@@ -125,7 +131,7 @@ export default function ModuleView({ monitor }) {
       if (area > 0) {
         const fr = Math.min(r * 0.62, 5 + Math.sqrt(area) * 2.2);
         const flick = reduce ? 1 : 1 + Math.sin(phase * 9) * 0.04;
-        const stretch = micro ? 1 : (m.env === "Mars base" ? 1.75 : 1.4);
+        const stretch = micro ? 1 : earth ? 2.3 : (m.env === "Mars base" ? 1.75 : 1.4);
         ctx.save();
         ctx.translate(srcX, midY - (stretch - 1) * fr * 0.6);
         ctx.scale(1, stretch);
@@ -152,16 +158,16 @@ export default function ModuleView({ monitor }) {
       ctx.fillStyle = "#1b2850";
       ctx.strokeStyle = "#7f93d6";
       ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.roundRect(nx - 9, midY - 20, 18, 40, 3); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.roundRect(nx - 9, nodeY - 20, 18, 40, 3); ctx.fill(); ctx.stroke();
       ctx.fillStyle = LEVEL_COLOR[level];
-      ctx.beginPath(); ctx.arc(nx, midY - 9, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(nx, nodeY - 9, 4, 0, Math.PI * 2); ctx.fill();
       if (level === "FIRE" && !reduce) {
         ctx.strokeStyle = `rgba(255,75,85,${0.5 + 0.4 * Math.sin(phase * 6)})`;
-        ctx.beginPath(); ctx.arc(nx, midY - 9, 9, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(nx, nodeY - 9, 9, 0, Math.PI * 2); ctx.stroke();
       }
       ctx.strokeStyle = "#7f93d6";
       for (let i = 0; i < 3; i++) { // vent slats
-        ctx.beginPath(); ctx.moveTo(nx - 5, midY + 3 + i * 5); ctx.lineTo(nx + 5, midY + 3 + i * 5); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(nx - 5, nodeY + 3 + i * 5); ctx.lineTo(nx + 5, nodeY + 3 + i * 5); ctx.stroke();
       }
 
       // labels
@@ -171,7 +177,7 @@ export default function ModuleView({ monitor }) {
       ctx.textAlign = "left";
       ctx.fillText(simMode ? "fabric sample" : "live node, no source model", srcX - 6, top - 9);
       ctx.textAlign = nx > w * 0.7 ? "right" : "left";
-      ctx.fillText("AeroFlame node at the air return", nx > w * 0.7 ? nx + 9 : nx - 9, top - 9);
+      ctx.fillText(earth ? "AeroFlame node on the ceiling" : "AeroFlame node at the air return", nx > w * 0.7 ? nx + 9 : nx - 9, top - 9);
 
       if (simMode) {
         const y = bottom + 17;
@@ -185,7 +191,7 @@ export default function ModuleView({ monitor }) {
         ctx.fillStyle = "#b9c4ea";
         ctx.textAlign = "center";
         const delay = m.sim ? Math.round(m.sim.delayS) : 0;
-        ctx.fillText(`${m.dist.toFixed(1)} m at ${m.air.toFixed(2)} m/s: smoke needs about ${delay} s to arrive`,
+        ctx.fillText(earth ? `${m.dist.toFixed(1)} m: the buoyant plume brings smoke in about ${delay} s` : `${m.dist.toFixed(1)} m at ${m.air.toFixed(2)} m/s: smoke needs about ${delay} s to arrive`,
           Math.max(srcX + 120, Math.min((srcX + nx) / 2, w - 150)), y + 19);
       }
 

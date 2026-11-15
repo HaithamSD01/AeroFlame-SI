@@ -5,7 +5,7 @@ import Insights from "./components/Insights.jsx";
 import HowItWorks from "./components/HowItWorks.jsx";
 import Tour from "./components/Tour.jsx";
 
-const TABS = [["monitor", "Live monitor"], ["insights", "NASA findings"], ["how", "How it works"]];
+const TABS = [["monitor", "Live monitor"], ["insights", "NASA findings"], ["how", "Video and how it works"]];
 
 export default function App() {
   const [tab, setTab] = useState("monitor");
@@ -42,11 +42,11 @@ export default function App() {
           </>
         )}
         {tab === "insights" && <Insights />}
-        {tab === "how" && <HowItWorks />}
+        {tab === "how" && <HowItWorks monitor={monitor} />}
       </main>
 
       <footer className="foot">
-        <p>Built by team AeroFlame in Casablanca for the NASA Space Apps Challenge 2026, challenge "Flame in Freefall".
+        <p>Built by team Atlas Cosmos in Casablanca for the NASA Space Apps Challenge 2026, challenge "Flame in Freefall".
           SI means Super Intelligence. The fire model is a simplified demonstration, not a certified safety tool.
           This project is not affiliated with NASA.</p>
         <p><a href="https://github.com/HaithamSD01/AeroFlame-SI" target="_blank" rel="noreferrer">Source code, firmware and simulation on GitHub</a></p>

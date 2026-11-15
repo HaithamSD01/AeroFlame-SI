@@ -1,4 +1,5 @@
 import { ASSUMPTIONS } from "../sim.js";
+import Module3D from "./Module3D.jsx";
 
 const STEPS = [
   ["Sense three things", "The node reads an IR flame sensor, an MQ-2 smoke sensor and a BME280 (temperature, pressure, humidity) once per second."],
@@ -26,7 +27,7 @@ const RESULTS = [
     "During a dust event a single detector false-alarms while AeroFlame stays nominal. After a real ignition AeroFlame reaches warning in 31 s."],
 ];
 
-export default function HowItWorks() {
+export default function HowItWorks({ monitor }) {
   return (
     <div className="how">
       <header className="page-head">
@@ -34,6 +35,30 @@ export default function HowItWorks() {
         <p>On Earth smoke rises to a detector on the ceiling. In orbit nothing rises, and NASA found that a single smoke detector
           misses some fires and alarms on dust. AeroFlame puts a small sensor node where the air goes and fuses three signals.</p>
       </header>
+
+      <section className="two media">
+        <div>
+          <h2>The 30-second demo</h2>
+          <video className="demo-video" controls preload="metadata" poster="demo-poster.jpg" src="AeroFlame_SI_demo.mp4">
+            <a href="AeroFlame_SI_demo.mp4">Download the demo video</a>
+          </video>
+          <p className="fine">Assembled with SI tools (marked "SI-generated"); the voice-over is SI-generated. The site shots are recordings of this site.</p>
+        </div>
+        <div>
+          <h2>The node in a module, in 3D</h2>
+          <div className="module3d-wrap">
+            <Module3D monitor={monitor} />
+            <div className="module-actions">
+              <button type="button" className="btn fire" onClick={monitor.ignite} disabled={monitor.source !== "sim" || monitor.ignited}>
+                {monitor.ignited ? "Fabric is burning" : "Ignite fabric"}
+              </button>
+              <button type="button" className="btn dust" onClick={monitor.dust} disabled={monitor.source !== "sim"}>Start dust event</button>
+              <button type="button" className="btn ghost" onClick={monitor.reset} disabled={monitor.source !== "sim"}>Reset run</button>
+            </div>
+          </div>
+          <p className="fine">Drag to rotate. It shows the same run as the live monitor: {monitor.env}, level {monitor.risk?.level || "NOMINAL"}.</p>
+        </div>
+      </section>
 
       <section>
         <h2>The chain, from sensor to explanation</h2>

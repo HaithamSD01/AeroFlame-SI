@@ -127,7 +127,7 @@ def live():
 live()
 
 # ------------------------------------------------------------------ NASA PSI link + SI explanation
-PSI_ENV = {"Spacesuit / EVA": "Spacecraft"}            # findings.csv has no EVA tag yet
+PSI_ENV = {"Spacesuit / EVA": "Spacecraft", "Earth (reference)": "Earth"}            # findings.csv has no EVA tag yet
 if st.session_state.risk:
     cur = st.session_state.risk[-1]
     last = st.session_state.hist[-1]
