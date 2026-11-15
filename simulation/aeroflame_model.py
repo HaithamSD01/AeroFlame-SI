@@ -17,6 +17,8 @@ ENVIRONMENTS = {
     "Mars base":       {"o2": 0.30, "p_psi": 10.2, "gravity": "Mars (0.38 g)", "micro": False},
     "Rover":           {"o2": 0.30, "p_psi": 10.2, "gravity": "lunar (1/6 g)", "micro": False},
     "Spacesuit / EVA": {"o2": 1.00, "p_psi": 4.3,  "gravity": "varies", "micro": True},
+    # Reference case: Earth air (NASA Earth Fact Sheet: about 21% O2, 1014 mb) with a buoyant plume.
+    "Earth (reference)": {"o2": 0.21, "p_psi": 14.7, "gravity": "Earth gravity (1 g)", "micro": False, "earth": True},
 }
 PSI_TO_HPA = 68.9476
 
@@ -64,6 +66,7 @@ class HabitatSim:
         e = ENVIRONMENTS[self.env]
         self.o2, self.p_hpa = e["o2"], e["p_psi"] * PSI_TO_HPA
         self.micro = e["micro"]
+        self.earth_reference = self.earth_reference or e.get("earth", False)
 
     # events ------------------------------------------------------------
     def ignite(self):

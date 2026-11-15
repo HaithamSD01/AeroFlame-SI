@@ -1,6 +1,6 @@
 [
   {
-    "id": "same-transport",
+    "id": "same-goal",
     "experiment": "SAME",
     "pillar": "Detection",
     "environments": [
@@ -10,9 +10,27 @@
       "Mars base",
       "Rover"
     ],
-    "finding": "With no buoyant flow in low gravity, smoke particles stay concentrated near their source and take longer to reach a detector. NASA Glenn's review of SAME argues that spacecraft detection should target early pyrolysis products rather than soot.",
-    "conditions": "Smoke from overheated spacecraft materials, measured in low gravity",
+    "finding": "In the absence of gravity smoke does not rise. The most likely source of a spacecraft fire is overheating electronic equipment, so NASA's goal is to detect smoke from pyrolysis before a flame develops.",
+    "conditions": "Smoke from overheated spacecraft materials (Teflon, Kapton, silicone rubber, lamp wick, Pyrell), ISS, 2007 and 2010",
     "basis": "Flight experiment (ISS)",
+    "year": 2016,
+    "sourceTitle": "Spacecraft Fire Safety Research at NASA Glenn Research Center (Meyer)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20170007283"
+  },
+  {
+    "id": "gasp-threshold",
+    "experiment": "GASP laboratory",
+    "pillar": "Detection",
+    "environments": [
+      "Spacecraft",
+      "Space station",
+      "Lunar base",
+      "Mars base",
+      "Rover"
+    ],
+    "finding": "In NASA Glenn laboratory tests against the ISS smoke detector's alarm threshold of 2 mg/m3, detection took from 1 to 6 minutes depending on the material, and the Teflon smoke generated would never trigger the alarm.",
+    "conditions": "Overheated spacecraft materials, ISS detector alarm threshold",
+    "basis": "Ground test",
     "year": 2016,
     "sourceTitle": "Spacecraft Fire Safety Research at NASA Glenn Research Center (Meyer)",
     "sourceUrl": "https://ntrs.nasa.gov/citations/20170007283"
@@ -72,7 +90,7 @@
   },
   {
     "id": "daft",
-    "experiment": "DAFT-2",
+    "experiment": "DAFT",
     "pillar": "Detection",
     "environments": [
       "Space station",
@@ -80,12 +98,12 @@
       "Mars base",
       "Rover"
     ],
-    "finding": "Tests detection of dust and aerosols in microgravity, which matters wherever dust can trigger false alarms.",
-    "conditions": "Dust and aerosols",
-    "basis": "Challenge report",
-    "year": null,
-    "sourceTitle": "Flame in Freefall challenge report / NASA PSI",
-    "sourceUrl": "https://psi.nasa.gov/"
+    "finding": "DAFT, completed on the ISS in August 2006, tested commercial dust and particle counters and showed they perform accurately in microgravity. It also found particulate levels on the ISS much lower than in earlier space vehicles, thanks to HEPA filtration.",
+    "conditions": "Commercial off-the-shelf dust and particle counters on the ISS",
+    "basis": "Flight experiment (ISS)",
+    "year": 2007,
+    "sourceTitle": "NASA Utilization of the International Space Station and the Vision for Space Exploration",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20070000530"
   },
   {
     "id": "detection-tradeoffs",
@@ -97,12 +115,30 @@
       "Lunar base",
       "Mars base"
     ],
-    "finding": "The time a crew has to respond depends on fire growth, vehicle size, detector design, air mixing and filtration. Small crew capsules need different alarm thresholds from a large vehicle such as the ISS.",
-    "conditions": "Lumped-element vehicle model fed with smoke, heat and toxic-gas data from overheated polymers",
+    "finding": "Spacecraft fire detection thresholds should not be copied from Earth or from other spacecraft. They need to be chosen for the vehicle's volume and for its air filtration and ventilation. Extra signals such as CO concentration can help.",
+    "conditions": "Vehicle model fed with smoke and toxic-gas data from overheated spacecraft materials",
     "basis": "Model with test data",
     "year": 2016,
     "sourceTitle": "Fire Detection Tradeoffs as a Function of Vehicle Parameters (Urban et al.)",
     "sourceUrl": "https://ntrs.nasa.gov/citations/20170000248"
+  },
+  {
+    "id": "knowledge-gaps",
+    "experiment": "Saffire planning",
+    "pillar": "Detection",
+    "environments": [
+      "Spacecraft",
+      "Space station",
+      "Lunar base",
+      "Mars base",
+      "Rover"
+    ],
+    "finding": "NASA lists hybrid gas-and-particulate sensors for fire detection among its knowledge gaps, next to low- and partial-gravity flammability limits. How fast a fire grows sets how fast it must be detected.",
+    "conditions": "Spacecraft Fire Safety Demonstration planning",
+    "basis": "NASA presentation",
+    "year": 2012,
+    "sourceTitle": "Unmanned Vehicle Material Flammability Test (Urban, Ruff et al.)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20130008174"
   },
   {
     "id": "saffire-4-5",
@@ -141,19 +177,33 @@
     "environments": [
       "Spacecraft",
       "Space station",
-      "Rover",
       "Lunar base",
-      "Mars base"
+      "Mars base",
+      "Rover"
     ],
-    "finding": "Tablet lithium-ion batteries driven into thermal runaway released aerosols and toxic gases including CO, HCN, HCl and CO2. NASA scaled the results to a laptop fire in an Orion-sized vehicle to check alarm detection, crew response time and whether life support can clean the air.",
-    "conditions": "Localized heating of 42 Wh and 97 Wh tablet batteries",
+    "finding": "Tablet battery fires vented electrolyte for 10 to 15 s, then burned for 20 to 40 s, releasing 24 to 33 kJ with flames up to 0.4 m. In the worst-case test with a 95 Wh laptop battery, CO passed the spacecraft maximum allowable concentration and visibility passed its threshold.",
+    "conditions": "Tablet and laptop batteries driven into thermal runaway in an Orion-like test chamber",
     "basis": "Ground test",
     "year": 2019,
     "sourceTitle": "Hazardous Product Detection and Environmental Clean-up Removal in Spacecraft Vehicles from Fire Induced Li-Ion Fires (Padilla et al.)",
     "sourceUrl": "https://ntrs.nasa.gov/citations/20200000365"
   },
   {
-    "id": "bass2-airflow",
+    "id": "earth-detection",
+    "experiment": "Earth fire safety",
+    "pillar": "Detection",
+    "environments": [
+      "Earth"
+    ],
+    "finding": "On Earth, hot smoke rises, and fire safety systems were developed from extensive study of typical building and forest fires. NASA notes that fire detection systems in space were developed without spacecraft fire data.",
+    "conditions": "Normal gravity (1 g)",
+    "basis": "NASA presentation",
+    "year": 2016,
+    "sourceTitle": "Spacecraft Fire Safety Research at NASA Glenn Research Center (Meyer)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20170007283"
+  },
+  {
+    "id": "bass2-quench",
     "experiment": "BASS-II",
     "pillar": "Suppression",
     "environments": [
@@ -163,12 +213,27 @@
       "Mars base",
       "Rover"
     ],
-    "finding": "Flames on solid fuels are very sensitive to airflow between 0 and 5 cm/s. They can survive below 1 cm/s as dim, steady blue flames, and they flare up when the airflow suddenly increases. Cutting ventilation weakens a fire but may not put it out.",
-    "conditions": "Thin and thick solid samples in a small wind tunnel on the ISS, flow up to 53 cm/s",
+    "finding": "For a thin plastic (PMMA) sheet in microgravity, the flame went out by radiative quenching when the opposing airflow fell below about 2 cm/s, and blew off when the flow passed about 40 cm/s. Between those limits it kept burning, so ventilation speed decides whether a fire survives.",
+    "conditions": "0.1 mm PMMA sheet, opposed flow, Microgravity Science Glovebox on the ISS",
     "basis": "Flight experiment (ISS)",
     "year": 2014,
     "sourceTitle": "Combustion of Solids in Microgravity: Results from the BASS-II Experiment (Ferkul et al.)",
     "sourceUrl": "https://ntrs.nasa.gov/citations/20160000593"
+  },
+  {
+    "id": "flex-cool-flames",
+    "experiment": "FLEX",
+    "pillar": "Suppression",
+    "environments": [
+      "Spacecraft",
+      "Space station"
+    ],
+    "finding": "FLEX revealed two-stage burning: after the hot flame goes out by radiation, a cool flame can keep burning. This could only be observed in long-duration microgravity.",
+    "conditions": "Fuel droplets, Combustion Integrated Rack on the ISS",
+    "basis": "Flight experiment (ISS)",
+    "year": 2016,
+    "sourceTitle": "Spacecraft Fire Safety Research at NASA Glenn Research Center (Meyer)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20170007283"
   },
   {
     "id": "flex2",
@@ -186,19 +251,60 @@
     "sourceUrl": "https://psi.nasa.gov/"
   },
   {
-    "id": "cfi",
-    "experiment": "CFI",
-    "pillar": "Suppression",
+    "id": "bass2-1g",
+    "experiment": "BASS-II",
+    "pillar": "Prevention",
     "environments": [
       "Spacecraft",
-      "Space station"
+      "Space station",
+      "Lunar base",
+      "Mars base",
+      "Rover",
+      "Earth"
     ],
-    "finding": "Studies cool flames: low-temperature burning that can continue without a visible flame.",
-    "conditions": "Droplet combustion (MDCA)",
-    "basis": "Challenge report",
-    "year": null,
-    "sourceTitle": "Flame in Freefall challenge report / NASA PSI",
-    "sourceUrl": "https://psi.nasa.gov/"
+    "finding": "BASS-II tested the hypothesis that, with adequate ventilation, materials may burn more readily in microgravity than in normal gravity, which would mean the 1-g test NASA uses to rate materials needs a second look at its safety margin. In its PMMA rod tests, flame spread rose with oxygen between 16% and 21%.",
+    "conditions": "PMMA rods, sheets and fabric in low-speed airflow, oxygen at 21% and below",
+    "basis": "Flight experiment (ISS)",
+    "year": 2014,
+    "sourceTitle": "Combustion of Solids in Microgravity: Results from the BASS-II Experiment (Ferkul et al.)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20160000593"
+  },
+  {
+    "id": "sofie-noms",
+    "experiment": "SoFIE",
+    "pillar": "Prevention",
+    "environments": [
+      "Spacecraft",
+      "Space station",
+      "Lunar base",
+      "Mars base",
+      "Rover"
+    ],
+    "finding": "In reduced gravity (0 g, lunar, Martian) a flame can be sustained at lower oxygen than in the 1-g screening test, where flames go out by blow-off. SoFIE reports a negative oxygen margin of safety of 1.4% O2 for PMMA rods, and notes that few thin materials pass even in 1 g at the exploration atmosphere of 34% O2 and 8.2 psia.",
+    "conditions": "Solid fuels at variable oxygen and pressure, Combustion Integrated Rack",
+    "basis": "Experiment design with earlier results",
+    "year": 2019,
+    "sourceTitle": "Solid Fuel Ignition and Extinction (SoFIE) Project on ISS (Ferkul et al.)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20200000361"
+  },
+  {
+    "id": "std-6001",
+    "experiment": "NASA-STD-6001 Test 1",
+    "pillar": "Prevention",
+    "environments": [
+      "Spacecraft",
+      "Space station",
+      "Lunar base",
+      "Mars base",
+      "Rover",
+      "Earth"
+    ],
+    "finding": "NASA qualifies spacecraft materials with an upward flame propagation test in normal gravity: a material passes if the flame goes out by itself. NASA notes that the limits found this way are strongly influenced by natural convection, which is absent in microgravity.",
+    "conditions": "5 cm by 33 cm samples, normal gravity",
+    "basis": "NASA presentation",
+    "year": 2012,
+    "sourceTitle": "Unmanned Vehicle Material Flammability Test (Urban, Ruff et al.)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20130008174"
   },
   {
     "id": "saffire-1",
@@ -208,7 +314,7 @@
       "Spacecraft",
       "Space station"
     ],
-    "finding": "The first large fire deliberately lit inside an orbiting spacecraft burned a thin fiberglass-cotton fabric. The flame spreading with the airflow stayed limited in size, and it spread more slowly in the large duct than in smaller microgravity wind tunnels.",
+    "finding": "Saffire-I burned a 40.6 cm by 94 cm cotton-fiberglass fabric in 20 cm/s airflow inside a Cygnus vehicle. The flame spread at 1.8 mm/s with the flow and 1.3 mm/s against it, released about 1.2 kW and burned for 420 s, and its length settled at a steady value instead of growing.",
     "conditions": "Spacecraft-scale fabric sample in orbit, Cygnus",
     "basis": "Flight experiment (Cygnus)",
     "year": 2017,
@@ -223,7 +329,7 @@
       "Spacecraft",
       "Space station"
     ],
-    "finding": "Saffire was built to measure how quickly a large fire grows in low gravity and to compare low-gravity flammability limits with the normal-gravity tests used to screen spacecraft materials.",
+    "finding": "Saffire-I and III were designed to measure how fast a large fire grows in low gravity and whether it reaches a steady spread rate. Saffire-II used samples the size of the NASA-STD-6001 Test 1 samples to measure how flammability limits differ in low gravity.",
     "conditions": "Spacecraft-realistic scale, Cygnus after leaving the ISS",
     "basis": "Experiment design",
     "year": 2016,
@@ -246,24 +352,6 @@
     "sourceUrl": "https://ntrs.nasa.gov/citations/20240007488"
   },
   {
-    "id": "bass2",
-    "experiment": "BASS-II",
-    "pillar": "Prevention",
-    "environments": [
-      "Spacecraft",
-      "Space station",
-      "Lunar base",
-      "Mars base",
-      "Rover"
-    ],
-    "finding": "Over a hundred burns of thin and thick solid samples tested how airflow, fuel thickness, preheating and oxygen concentration change the way materials burn in microgravity.",
-    "conditions": "Varying airflow and O2, Microgravity Science Glovebox",
-    "basis": "Flight experiment (ISS)",
-    "year": 2014,
-    "sourceTitle": "Combustion of Solids in Microgravity: Results from the BASS-II Experiment (Ferkul et al.)",
-    "sourceUrl": "https://ntrs.nasa.gov/citations/20160000593"
-  },
-  {
     "id": "habitat-atmosphere",
     "experiment": "Habitat atmosphere",
     "pillar": "Prevention",
@@ -278,24 +366,6 @@
     "year": 2021,
     "sourceTitle": "Research Questions and Challenges for Improved Spacecraft Fire Detection (Fortenberry et al.)",
     "sourceUrl": "https://ntrs.nasa.gov/citations/20210022143"
-  },
-  {
-    "id": "sofie",
-    "experiment": "SoFIE",
-    "pillar": "Prevention",
-    "environments": [
-      "Spacecraft",
-      "Space station",
-      "Lunar base",
-      "Mars base",
-      "Rover"
-    ],
-    "finding": "An insert for the Combustion Integrated Rack on the ISS built to study how solid materials ignite and go out at variable oxygen and pressure, the conditions exploration habitats will use.",
-    "conditions": "Variable O2 and pressure, Combustion Integrated Rack",
-    "basis": "Experiment design",
-    "year": 2019,
-    "sourceTitle": "Solid Fuel Ignition and Extinction (SoFIE) Project on ISS (Ferkul et al.)",
-    "sourceUrl": "https://ntrs.nasa.gov/citations/20200000361"
   },
   {
     "id": "eva",
@@ -328,6 +398,34 @@
     "sourceUrl": "https://psi.nasa.gov/"
   },
   {
+    "id": "earth-home-fires",
+    "experiment": "Earth fire statistics",
+    "pillar": "Prevention",
+    "environments": [
+      "Earth"
+    ],
+    "finding": "Almost 20% of home fire deaths start with upholstered furniture, and over 40% of home fires are caused by cooking equipment (National Fire Protection Association figures quoted by NASA). The ISS has neither, which is why NASA had to study smoke from typical spacecraft materials instead.",
+    "conditions": "Homes on Earth",
+    "basis": "Statistics quoted in a NASA presentation",
+    "year": 2016,
+    "sourceTitle": "Spacecraft Fire Safety Research at NASA Glenn Research Center (Meyer)",
+    "sourceUrl": "https://ntrs.nasa.gov/citations/20170007283"
+  },
+  {
+    "id": "earth-atmosphere",
+    "experiment": "Earth atmosphere",
+    "pillar": "Fundamentals",
+    "environments": [
+      "Earth"
+    ],
+    "finding": "Air at Earth's surface is about 21% oxygen at about 1014 mb (14.7 psi), under 1 g. This is the reference case in the simulation: the ISS cabin uses the same air, without the gravity.",
+    "conditions": "Sea level",
+    "basis": "NASA fact sheet",
+    "year": 2024,
+    "sourceTitle": "Earth Fact Sheet (NASA Goddard, NSSDCA)",
+    "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+  },
+  {
     "id": "acme",
     "experiment": "ACME",
     "pillar": "Fundamentals",
@@ -335,7 +433,7 @@
       "Spacecraft",
       "Space station"
     ],
-    "finding": "Six studies of gaseous-fuel flames ran on the ISS from 2017 to 2022, covering sooty and highly diluted flames, electric-field effects (up to 10 kV), material flammability, and soot and flame dynamics.",
+    "finding": "ACME ran gaseous-fuel flame experiments in the ISS Combustion Integrated Rack from September 2017 to February 2022. One of them, E-FIELD Flames, studies how electric fields act on the ions a flame produces.",
     "conditions": "Gaseous fuels, Combustion Integrated Rack",
     "basis": "Flight experiment (ISS)",
     "year": 2022,

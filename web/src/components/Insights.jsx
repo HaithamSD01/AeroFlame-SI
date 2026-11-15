@@ -3,7 +3,7 @@ import { rank } from "../rank.js";
 import FINDINGS from "../data/findings.json";
 import AskSI from "./AskSI.jsx";
 
-const ENVS = ["Spacecraft", "Space station", "Lunar base", "Mars base", "Rover"];
+const ENVS = ["Spacecraft", "Space station", "Lunar base", "Mars base", "Rover", "Earth"];
 const PILLARS = ["Prevention", "Detection", "Suppression", "Fundamentals"];
 
 function exportCsv(rows, env) {
@@ -21,7 +21,7 @@ export default function Insights() {
   const [env, setEnv] = useState("Lunar base");
   const [pillars, setPillars] = useState(PILLARS);
   const [question, setQuestion] = useState("");
-  const query = question.trim() || `fire safety risks and protection in a ${env}`;
+  const query = question.trim() || `fire safety risks and protection: ${env}`;
   const ranked = useMemo(
     () => rank(FINDINGS.filter((f) => f.environments.includes(env) && pillars.includes(f.pillar)), query),
     [env, pillars, query],
@@ -58,7 +58,7 @@ export default function Insights() {
       <div className="grounding">
         <div>
           <div className="log-head">
-            <h2>{ranked.length} findings for a {env.toLowerCase()}</h2>
+            <h2>{ranked.length} findings for {env === "Earth" ? "Earth" : `a ${env.toLowerCase()}`}</h2>
             <button type="button" className="btn ghost small" disabled={!ranked.length} onClick={() => exportCsv(ranked, env)}>Export CSV</button>
           </div>
           {!ranked.length && <p className="empty">No findings match this filter. Turn a pillar back on.</p>}

@@ -27,6 +27,8 @@ ported to JavaScript and checked against it (`npm test`).
 - **Guided tour** (7 steps) that runs the dust false alarm and the real fire for a first-time visitor.
 - **ESP32 node over USB in the browser** (Web Serial, Chrome or Edge on a computer): the same page reads the real sensors.
 - **NASA findings** with a source link and the basis of each one (flight experiment, ground test, model, challenge report).
+- **Earth reference case** (21% O2, 14.7 psi, 1 g, buoyant plume to a ceiling detector) next to the six space environments.
+- **30-second demo video and a 3D view** of the node in a module, on the "Video and how it works" tab.
 - **SI endpoint** `web/api/explain.js` (serverless): the Gemini key stays on the server as `GEMINI_API_KEY`;
   the prompt is built on the server from the live readings and the findings in `web/src/data/findings.json`.
 

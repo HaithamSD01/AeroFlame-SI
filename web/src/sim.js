@@ -11,6 +11,8 @@ export const ENVIRONMENTS = {
   "Mars base": { o2: 0.30, pPsi: 10.2, gravity: "Mars gravity (0.38 g)", micro: false },
   "Rover": { o2: 0.30, pPsi: 10.2, gravity: "lunar gravity (1/6 g)", micro: false },
   "Spacesuit / EVA": { o2: 1.0, pPsi: 4.3, gravity: "varies", micro: true },
+  // Reference case: Earth air (NASA Earth Fact Sheet: about 21% O2, 1014 mb) with a buoyant plume.
+  "Earth (reference)": { o2: 0.21, pPsi: 14.7, gravity: "Earth gravity (1 g)", micro: false, earth: true },
 };
 export const PSI_TO_HPA = 68.9476;
 
@@ -18,7 +20,9 @@ export const ASSUMPTIONS = [
   "Atmospheres (O2 %, psi) come from the challenge report; the Mars base is assumed equal to the lunar base.",
   "Flame spread over a thin fabric: v = k (X_O2 - X_lim), with X_lim = 0.15 and k chosen so v = 1 mm/s at 21% O2.",
   "Microgravity: no buoyant plume, so smoke reaches the node only with the cabin airflow (delay = distance / air speed).",
-  "Earth reference: a buoyant plume carries smoke to a ceiling detector at about 0.5 m/s.",
+  "Earth reference: a buoyant plume carries smoke to a ceiling detector at about 0.5 m/s, whatever the cabin airflow.",
+  "For scale: Saffire-I measured 1.8 mm/s for a cotton-fiberglass fabric in 20 cm/s airflow in orbit; the model's fabric spreads at 1.0 mm/s in 21% O2.",
+  "Flammability here depends on the oxygen fraction. A lunar habitat at 30% O2 and 10.2 psi has about the same oxygen partial pressure as Earth air, but less nitrogen to absorb heat.",
   "Smoke and heat mix in one well-ventilated module (single-zone model).",
   "The IR flame sensor needs a larger flame in microgravity, because flames there are dimmer and bluer (less soot).",
   "The SI risk index is a heuristic: sensor evidence x oxygen factor, capped at 100. Thresholds are illustrative.",
@@ -57,7 +61,7 @@ export class HabitatSim {
     this.distanceM = distanceM;
     this.airSpeedMS = airSpeedMS;
     this.volumeM3 = volumeM3;
-    this.earthReference = earthReference;
+    this.earthReference = earthReference || Boolean(ENVIRONMENTS[env].earth);
     this.t = 0;
     this.ignitionT = null;
     this.dustUntil = -1;
