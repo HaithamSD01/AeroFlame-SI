@@ -222,3 +222,7 @@ code { font-size: 0.9em; background: #dfe4e9; padding: 1px 5px; border-radius: 3
   .charts { grid-template-columns: minmax(0, 1fr); }
   .field { min-width: 100%; }
 }
+
+/* text shown before the app loads, also read by search engines */
+.prerender { max-width: 720px; margin: 64px auto; padding: 0 24px; font-family: Archivo, sans-serif; color: #121B2E; line-height: 1.5; }
+.prerender h1 { font-size: 40px; margin-bottom: 16px; }
